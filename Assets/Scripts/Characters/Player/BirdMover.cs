@@ -18,6 +18,13 @@ public class BirdMover : MonoBehaviour
     private Quaternion _maxRotation;
     private Quaternion _minRotation;
 
+    public void Reset()
+    {
+        transform.position = _startPosition;
+        transform.rotation = _startRotation;
+        _rigidbody.velocity = Vector2.zero;
+    }
+
     private void Start()
     {
         _startPosition = transform.position;
@@ -46,24 +53,17 @@ public class BirdMover : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, _minRotation, _rotationSpeed * Time.deltaTime);
     }
 
-    public void Reset()
-    {
-        transform.position = _startPosition;
-        transform.rotation = _startRotation;
-        _rigidbody.velocity = Vector2.zero;
-    }
-
     private IEnumerator UpwardsBird()
     {
         var wait = new WaitForEndOfFrame();
 
-        float i = 0;
+        float _upwardsTime = 0;
 
         while (transform.rotation.eulerAngles.z <= _maxRotation.eulerAngles.z - 1f || transform.rotation.eulerAngles.z > 300f)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, _maxRotation, i);
+            transform.rotation = Quaternion.Lerp(transform.rotation, _maxRotation, _upwardsTime);
 
-            i += Time.deltaTime;
+            _upwardsTime += Time.deltaTime;
 
             yield return wait;
         }

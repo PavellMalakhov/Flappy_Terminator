@@ -1,21 +1,23 @@
 using UnityEngine;
-using TMPro;
+using System;
 
 public class ScoreCounter : MonoBehaviour
 {
-    [SerializeField] private TextMeshPro _poolInfo;
-
     private int _score;
+
+    public event Action<int> Score—hanged;
 
     public void Reset()
     {
         _score = 0;
+
+        Score—hanged?.Invoke(_score);
     }
 
     public void Add()
     {
         _score++;
 
-        _poolInfo.text = ($"{_score}");
+        Score—hanged?.Invoke(_score);
     }
 }

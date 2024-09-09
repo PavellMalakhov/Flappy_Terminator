@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
     [SerializeField] private StartScreen _startScreen;
     [SerializeField] private EndScreen _endScreen;
     [SerializeField] private Bird _bird;
+
+    //private string _mainScene = "MainGame";
 
     private void Start()
     {
@@ -30,6 +33,8 @@ public class Game : MonoBehaviour
     {
         _endScreen.Close();
         StartGame();
+
+        //SceneManager.LoadScene(_mainScene);
     }
 
     private void OnPlayButtonClick()

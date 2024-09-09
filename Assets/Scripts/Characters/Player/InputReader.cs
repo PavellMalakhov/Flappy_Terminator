@@ -5,16 +5,19 @@ public class InputReader : MonoBehaviour
     private bool _isAttack;
     private bool _isTakeOff;
 
+    private int _mouseButtonAttack = 0;
+    private KeyCode _takeOff = KeyCode.Space;
+
     public float Direction { get; private set; }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(_mouseButtonAttack))
         {
             _isAttack = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(_takeOff))
         {
             _isTakeOff = true;
         }

@@ -13,6 +13,13 @@ public class Bird : MonoBehaviour
 
     public event Action GameOver;
 
+    public void Reset()
+    {
+        _scoreCounter.Reset();
+        _birdMover.Reset();
+        StopAllCoroutines();
+    }
+
     private void Awake()
     {
         _birdMover = GetComponent<BirdMover>();
@@ -39,12 +46,5 @@ public class Bird : MonoBehaviour
             Debug.Log("GameOver");
             Time.timeScale = 0;
         }
-    }
-
-    public void Reset()
-    {
-        _scoreCounter.Reset();
-        _birdMover.Reset();
-        StopAllCoroutines();
     }
 }

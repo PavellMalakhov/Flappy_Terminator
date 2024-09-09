@@ -9,6 +9,14 @@ public class Enemy : MonoBehaviour, IInteractable
 
     public EnemyGenerator EnemyGenerator { get; private set; }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.TryGetComponent<BirdMissile>(out _))
+        {
+            EnemyGenerator.Release(this);
+        }
+    }
+
     public void Go()
     {
         _rigidbody2D.velocity = new Vector2(- _speed, 0f);
@@ -17,13 +25,5 @@ public class Enemy : MonoBehaviour, IInteractable
     public void SetSpawnerEnemy(EnemyGenerator enemyGenerator)
     {
         EnemyGenerator = enemyGenerator;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.TryGetComponent<BirdMissile>(out _))
-        {
-            EnemyGenerator.Release(this);
-        }
     }
 }

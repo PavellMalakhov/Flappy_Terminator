@@ -18,15 +18,6 @@ public class Gun : Spawner<Missile>
         _enemyGenerator.Shot += Fire;
     }
 
-    private void Fire(Vector2 positionEnemy)
-    {
-        _positionEnemy.Enqueue(positionEnemy);
-
-        _pool.Get(out Missile missile);
-
-        missile.SetGunMissile(this);
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent<Missile>(out Missile missile))
@@ -43,7 +34,16 @@ public class Gun : Spawner<Missile>
         Vector2 position = _positionEnemy.Dequeue();
 
         missile.transform.position = new Vector2(position.x, position.y + _heightGun);
-        
+
         missile.Go();
+    }
+
+    private void Fire(Vector2 positionEnemy)
+    {
+        _positionEnemy.Enqueue(positionEnemy);
+
+        Pool.Get(out Missile missile);
+
+        missile.SetGunMissile(this);
     }
 }

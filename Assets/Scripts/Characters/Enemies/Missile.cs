@@ -18,12 +18,4 @@ public class Missile : MonoBehaviour, IInteractable
     {
         Gun = gun;
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.TryGetComponent<BirdMissile>(out _))
-        {
-            Gun.Release(this);
-        }
-    }
 }

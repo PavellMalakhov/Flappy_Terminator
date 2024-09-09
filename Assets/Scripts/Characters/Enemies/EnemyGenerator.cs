@@ -43,6 +43,18 @@ public class EnemyGenerator : Spawner<Enemy>
         _scoreCounter.Add();
     }
 
+    protected override void Init(Enemy enemy)
+    {
+        Vector3 position = enemy.transform.position;
+        position.x = _bird.transform.position.x + _xOffset;
+
+        enemy.transform.position = new Vector2(position.x, UnityEngine.Random.Range(_heightMin, _heightMax));
+
+        _enemyCoroutine.Add(enemy, StartCoroutine(OpenFire(_rateFire, enemy)));
+
+        enemy.Go();
+    }
+
     private IEnumerator RepeatGetEnemy(float delay)
     {
         var wait = new WaitForSeconds(delay);
@@ -57,21 +69,9 @@ public class EnemyGenerator : Spawner<Enemy>
 
     private void GetGameObject()
     {
-        _pool.Get(out Enemy enemy);
+        Pool.Get(out Enemy enemy);
 
         enemy.SetSpawnerEnemy(this);
-    }
-
-    protected override void Init(Enemy enemy)
-    {
-        Vector3 position = enemy.transform.position;
-        position.x = _bird.transform.position.x + _xOffset;
-
-        enemy.transform.position = new Vector2(position.x, UnityEngine.Random.Range(_heightMin, _heightMax));
-
-        _enemyCoroutine.Add(enemy, StartCoroutine(OpenFire(_rateFire, enemy)));
-
-        enemy.Go();
     }
 
     private IEnumerator OpenFire(float rateFire, Enemy enemy)
