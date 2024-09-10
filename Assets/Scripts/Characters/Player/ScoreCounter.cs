@@ -3,21 +3,21 @@ using System;
 
 public class ScoreCounter : MonoBehaviour
 {
-    private int _score;
+    private int _value;
 
     public event Action<int> Score—hanged;
 
     public void Reset()
     {
-        _score = 0;
+        _value = 0;
 
-        Score—hanged?.Invoke(_score);
+        Score—hanged?.Invoke(_value);
     }
 
     public void Add()
     {
-        _score++;
+        _value++;
 
-        Score—hanged?.Invoke(_score);
+        Score—hanged?.Invoke(_value);
     }
 }

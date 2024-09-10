@@ -11,9 +11,11 @@ public class Enemy : MonoBehaviour, IInteractable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent<BirdMissile>(out _))
+        if (collision.gameObject.TryGetComponent<BirdMissile>(out BirdMissile birdMissile))
         {
             EnemyGenerator.Release(this);
+
+            birdMissile.gameObject.SetActive(false);
         }
     }
 

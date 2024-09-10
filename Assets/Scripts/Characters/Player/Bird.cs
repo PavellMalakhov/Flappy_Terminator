@@ -13,13 +13,6 @@ public class Bird : MonoBehaviour
 
     public event Action GameOver;
 
-    public void Reset()
-    {
-        _scoreCounter.Reset();
-        _birdMover.Reset();
-        StopAllCoroutines();
-    }
-
     private void Awake()
     {
         _birdMover = GetComponent<BirdMover>();
@@ -35,6 +28,13 @@ public class Bird : MonoBehaviour
     private void OnDisable()
     {
         _handler.CollisionDetected -= ProcessCollision;
+    }
+
+    public void Reset()
+    {
+        _scoreCounter.Reset();
+        _birdMover.Reset();
+        StopAllCoroutines();
     }
 
     private void ProcessCollision(IInteractable interactable)

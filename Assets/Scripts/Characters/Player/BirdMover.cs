@@ -18,13 +18,6 @@ public class BirdMover : MonoBehaviour
     private Quaternion _maxRotation;
     private Quaternion _minRotation;
 
-    public void Reset()
-    {
-        transform.position = _startPosition;
-        transform.rotation = _startRotation;
-        _rigidbody.velocity = Vector2.zero;
-    }
-
     private void Start()
     {
         _startPosition = transform.position;
@@ -51,6 +44,13 @@ public class BirdMover : MonoBehaviour
         }
 
         transform.rotation = Quaternion.Lerp(transform.rotation, _minRotation, _rotationSpeed * Time.deltaTime);
+    }
+
+    public void Reset()
+    {
+        transform.position = _startPosition;
+        transform.rotation = _startRotation;
+        _rigidbody.velocity = Vector2.zero;
     }
 
     private IEnumerator UpwardsBird()
