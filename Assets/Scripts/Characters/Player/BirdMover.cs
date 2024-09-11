@@ -23,10 +23,7 @@ public class BirdMover : MonoBehaviour
         _startPosition = transform.position;
         _startRotation = transform.rotation;
 
-        if (TryGetComponent<Rigidbody2D>(out Rigidbody2D rigidbody))
-        {
-            _rigidbody = rigidbody;
-        }
+        _rigidbody = GetComponent<Rigidbody2D>();
 
         _maxRotation = Quaternion.Euler(0, 0, _maxRotationZ);
         _minRotation = Quaternion.Euler(0, 0, _minRotationZ);

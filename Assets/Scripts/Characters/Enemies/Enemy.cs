@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 
@@ -7,13 +8,13 @@ public class Enemy : MonoBehaviour, IInteractable
     [SerializeField] private Rigidbody2D _rigidbody2D;
     [SerializeField] private float _speed = 1f;
 
-    public EnemyGenerator EnemyGenerator { get; private set; }
+    public event Action<Enemy> Destroyed;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.TryGetComponent<BirdMissile>(out BirdMissile birdMissile))
         {
-            EnemyGenerator.Release(this);
+            Destroyed?.Invoke(this);
 
             birdMissile.gameObject.SetActive(false);
         }
@@ -22,10 +23,5 @@ public class Enemy : MonoBehaviour, IInteractable
     public void Go()
     {
         _rigidbody2D.velocity = new Vector2(- _speed, 0f);
-    }
-
-    public void SetSpawnerEnemy(EnemyGenerator enemyGenerator)
-    {
-        EnemyGenerator = enemyGenerator;
     }
 }

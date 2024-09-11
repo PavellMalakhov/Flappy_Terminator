@@ -7,6 +7,7 @@ public class Gun : Spawner<Missile>
     [SerializeField] private EnemyGenerator _enemyGenerator;
 
     private Queue<Vector2> _positionEnemy = new();
+    private List<Missile> _activeMissile = new();
 
     private void OnEnable()
     {
@@ -22,7 +23,7 @@ public class Gun : Spawner<Missile>
     {
         if (other.TryGetComponent<Missile>(out Missile missile))
         {
-            if (missile.Gun == this)
+            if (_activeMissile.Contains(missile))
             {
                 Release(missile);
             }
@@ -31,6 +32,8 @@ public class Gun : Spawner<Missile>
 
     protected override void Init(Missile missile)
     {
+        _activeMissile.Add(missile);
+
         Vector2 position = _positionEnemy.Dequeue();
 
         missile.transform.position = new Vector2(position.x, position.y + _heightGun);
@@ -42,8 +45,13 @@ public class Gun : Spawner<Missile>
     {
         _positionEnemy.Enqueue(positionEnemy);
 
-        Pool.Get(out Missile missile);
+        GetGameObject();
+    }
 
-        missile.SetGunMissile(this);
+    protected override void Release(Missile missile)
+    {
+        _activeMissile.Remove(missile);
+
+        base.Release(missile);
     }
 }

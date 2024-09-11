@@ -11,16 +11,18 @@ public class BirdGun : Spawner<BirdMissile>
     {
         if (_inputReader.GetAttack())
         {
-            Pool.Get();
+            GetGameObject();
         }
     }
 
     protected override void Init(BirdMissile birdMissile)
     {
         birdMissile.transform.position = transform.position;
+
         birdMissile.transform.rotation = gameObject.transform.rotation;
-        birdMissile.SetGunMissile(this);
+
         birdMissile.Go();
+
         StartCoroutine(CountingLifeTime(_birdMissileLifeTime, birdMissile));
     }
 

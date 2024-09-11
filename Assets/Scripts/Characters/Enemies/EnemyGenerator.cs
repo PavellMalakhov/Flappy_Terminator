@@ -13,7 +13,8 @@ public class EnemyGenerator : Spawner<Enemy>
     [SerializeField] private float _rateFire = 2f;
     [SerializeField] private ScoreCounter _scoreCounter;
 
-    private Dictionary<Enemy, Coroutine> _enemyCoroutine = new();
+    private Dictionary<Enemy, Coroutine> _enemyShotCoroutine = new();
+    private List<Enemy> _activeEnemies = new();
 
     public event Action<Vector2> Shot;
 
@@ -26,17 +27,21 @@ public class EnemyGenerator : Spawner<Enemy>
     {
         if (other.TryGetComponent<Enemy>(out Enemy enemy))
         {
-            if (enemy.EnemyGenerator == this)
+            if (_activeEnemies.Contains(enemy))
             {
                 Release(enemy);
             }
         }
     }
 
-    public override void Release(Enemy enemy)
+    protected override void Release(Enemy enemy)
     {
-        StopCoroutine(_enemyCoroutine[enemy]);
-        _enemyCoroutine.Remove(enemy);
+        enemy.Destroyed -= Release;
+
+        _activeEnemies.Remove(enemy);
+
+        StopCoroutine(_enemyShotCoroutine[enemy]);
+        _enemyShotCoroutine.Remove(enemy);
 
         base.Release(enemy);
 
@@ -45,12 +50,16 @@ public class EnemyGenerator : Spawner<Enemy>
 
     protected override void Init(Enemy enemy)
     {
+        _activeEnemies.Add(enemy);
+
+        enemy.Destroyed += Release;
+
         Vector3 position = enemy.transform.position;
         position.x = _bird.transform.position.x + _xOffset;
 
         enemy.transform.position = new Vector2(position.x, UnityEngine.Random.Range(_heightMin, _heightMax));
 
-        _enemyCoroutine.Add(enemy, StartCoroutine(OpenFire(_rateFire, enemy)));
+        _enemyShotCoroutine.Add(enemy, StartCoroutine(OpenFire(_rateFire, enemy)));
 
         enemy.Go();
     }
@@ -65,13 +74,6 @@ public class EnemyGenerator : Spawner<Enemy>
 
             GetGameObject();
         }
-    }
-
-    private void GetGameObject()
-    {
-        Pool.Get(out Enemy enemy);
-
-        enemy.SetSpawnerEnemy(this);
     }
 
     private IEnumerator OpenFire(float rateFire, Enemy enemy)

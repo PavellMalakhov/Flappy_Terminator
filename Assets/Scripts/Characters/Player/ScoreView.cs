@@ -8,12 +8,12 @@ public class ScoreView : MonoBehaviour
 
     private void OnEnable()
     {
-        _counter.Score—hanged += Show;
+        _counter.Changed += Show;
     }
 
     private void OnDisable()
     {
-        _counter.Score—hanged -= Show;
+        _counter.Changed -= Show;
     }
 
     private void Show(int score)
